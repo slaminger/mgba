@@ -1728,13 +1728,22 @@ void retro_run(void) {
 #endif
 
 	if (rumbleCallback) {
-		if (rumbleUp) {
-			rumbleCallback(0, RETRO_RUMBLE_STRONG, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
-			rumbleCallback(0, RETRO_RUMBLE_WEAK, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
+		FILE *file;
+          if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
+               fputs("10", file);
+                fclose(file);
+                } else {
+			   rumbleCallback(0, RETRO_RUMBLE_STRONG, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
+			   rumbleCallback(0, RETRO_RUMBLE_WEAK, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
+			}
 		} else {
-			rumbleCallback(0, RETRO_RUMBLE_STRONG, 0);
-			rumbleCallback(0, RETRO_RUMBLE_WEAK, 0);
-		}
+            if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
+               fputs("1000000", file);
+               fclose(file);
+                  } else {
+		   rumbleCallback(0, RETRO_RUMBLE_STRONG, 0);
+		   rumbleCallback(0, RETRO_RUMBLE_WEAK, 0);
+			}
 		rumbleUp = 0;
 		rumbleDown = 0;
 	}
