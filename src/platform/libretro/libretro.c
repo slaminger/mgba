@@ -1745,6 +1745,7 @@ void retro_run(void) {
 		   rumbleCallback(0, RETRO_RUMBLE_STRONG, 0);
 		   rumbleCallback(0, RETRO_RUMBLE_WEAK, 0);
 			}
+		}
 		rumbleUp = 0;
 		rumbleDown = 0;
 	}
