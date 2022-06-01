@@ -1729,6 +1729,7 @@ void retro_run(void) {
 
 	if (rumbleCallback) {
 		FILE *file;
+		if (rumbleUp) {
           if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
                fputs("10", file);
                 fclose(file);
